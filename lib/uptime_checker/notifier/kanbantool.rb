@@ -30,7 +30,7 @@ module UptimeChecker
               params = {
                   api_token: Config.kanbantool_api_token,
                   name: "#{subject} - #{Time.current}",
-                  description: "#{message} </br> A aplicação ainda não tinha retornado até o momento da abertura do chamado. </br>#{incident.id}",
+                  description: "#{message} </br> A aplicação ainda não tinha retornado até o momento da abertura do chamado. </br>http://sda.saude.gov.br/albatross-admin/incidents/#{incident.id}",
                   workflow_stage_id: options[:kanbantool]['workflow_stage_id'],
                   card_type_id: options[:kanbantool]['card_type_id'],
               #    assigned_user_id: options[:kanbantool]['assigned_user_id'],
