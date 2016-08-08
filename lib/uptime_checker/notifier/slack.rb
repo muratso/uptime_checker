@@ -12,7 +12,7 @@ module UptimeChecker
       end
 
       def self.id
-        "slack" || "slack_customer"
+        "slack"
       end
 
       def self.notify(subject, message, options)
