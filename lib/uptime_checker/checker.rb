@@ -107,8 +107,7 @@ module UptimeChecker
     end
 
     def notify_down_warning?(transition)
-      time_down = transition.current.time - transition.previous.time
-      time_down == 5.minutes &&
+      transition.failures == 15 &&
         !transition.previous.passed &&
         !transition.current.passed
     end
