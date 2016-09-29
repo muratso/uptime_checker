@@ -15,6 +15,7 @@ module UptimeChecker
         board_id = options[:kanbantool]['board_id']
           if options[:state] == :warning
             Albatross::Admin::Client.endpoint = "http://sda.saude.gov.br/albatross-admin/"
+            Albatross::Admin::Client.token = 'p5aDsTlKxmZ9dsYHarucLCb0VbviNnA2'
             incident = Albatross::Admin::Client::Incident.new
             incident.status = "aberto"
             incident.reference_date = Time.now
@@ -24,7 +25,6 @@ module UptimeChecker
             application = Albatross::Admin::Client::Application.select(:id).where(slug: options[:name]).first
             incident.relationships[:application] = application
             incident.relationships[:'incident-category'] = Albatross::Admin::Client::IncidentCategory.new(id: 6)
-            incident.relationships[:author] = Albatross::Admin::Client::User.new(id: 4)
 
             if incident.save
               params = {
