@@ -2,6 +2,13 @@ require "albatross-admin-client"
 module UptimeChecker
   module Notifier
     class Kanbantool
+      
+      def self.init_albatross_client
+        return if @albatross_initialized
+        @albatross_initialized = true
+        Albatross::Admin::Client.endpoint = "http://sda.saude.gov.br/albatross-admin/"
+        Albatross::Admin::Client.token = 'p5aDsTlKxmZ9dsYHarucLCb0VbviNnA2'
+      end
 
       def self.enabled?
         Config.kanbantool_api_token
@@ -14,8 +21,7 @@ module UptimeChecker
       def self.notify(subject, message, options)
         board_id = options[:kanbantool]['board_id']
           if options[:state] == :warning
-            Albatross::Admin::Client.endpoint = "http://sda.saude.gov.br/albatross-admin/"
-            Albatross::Admin::Client.token = 'p5aDsTlKxmZ9dsYHarucLCb0VbviNnA2'
+            init_albatross_client
             incident = Albatross::Admin::Client::Incident.new
             incident.status = "aberto"
             incident.reference_date = Time.now
