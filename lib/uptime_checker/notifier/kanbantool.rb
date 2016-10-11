@@ -24,7 +24,7 @@ module UptimeChecker
             init_albatross_client
             incident = Albatross::Admin::Client::Incident.new
             incident.description = "<div>#{subject}  - #{message}<br>Favor verificar a possível causa do incidente.</div>"
-            incident.start = options[:time]
+            incident.start = options[:ptime]
             application = Albatross::Admin::Client::Application.select(:id).where(slug: options[:name]).first
             incident.relationships[:application] = application
             incident.relationships[:'incident-category'] = Albatross::Admin::Client::IncidentCategory.new(id: 6)
