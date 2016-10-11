@@ -23,11 +23,8 @@ module UptimeChecker
           if options[:state] == :warning
             init_albatross_client
             incident = Albatross::Admin::Client::Incident.new
-            incident.status = "aberto"
-            incident.reference_date = Time.now
-            incident.due_date = Time.now + 1.day
-            incident.description = "<div> #{subject}  - #{message} </br>Favor verificar a possível causa do incidente.</div>"
-            incident.log = "<div> #{Time.now.strftime("%d/%m/%Y %H:%M")} - Uptime Checker - Abertura de Incidente</div>"
+            incident.description = "<div>#{subject}  - #{message}<br>Favor verificar a possível causa do incidente.</div>"
+            incident.start = options[:time]
             application = Albatross::Admin::Client::Application.select(:id).where(slug: options[:name]).first
             incident.relationships[:application] = application
             incident.relationships[:'incident-category'] = Albatross::Admin::Client::IncidentCategory.new(id: 6)
@@ -36,7 +33,7 @@ module UptimeChecker
               params = {
                   api_token: Config.kanbantool_api_token,
                   name: "#{subject} - #{Time.current}",
-                  description: "#{message} </br> A aplicação ainda não tinha retornado até o momento da abertura do chamado. </br>http://sda.saude.gov.br/albatross-admin/incidents/#{incident.id}",
+                  description: "#{message}<br>A aplicação ainda não tinha retornado até o momento da abertura do chamado.<br>http://sda.saude.gov.br/albatross-admin/incidents/#{incident.id}",
                   workflow_stage_id: options[:kanbantool]['workflow_stage_id'],
                   card_type_id: options[:kanbantool]['card_type_id'],
               #    assigned_user_id: options[:kanbantool]['assigned_user_id'],
@@ -47,7 +44,7 @@ module UptimeChecker
               params = {
                   api_token: Config.kanbantool_api_token,
                   name: "#{subject} - #{Time.current}",
-                  description: "#{message}</br> A aplicação ainda não tinha retornado até o momento da abertura do chamado. </br> Não foi aberto incidente no albatross. Não foi possível encontrar a referência da aplicação",
+                  description: "#{message}</br>A aplicação ainda não tinha retornado até o momento da abertura do chamado. </br> Não foi aberto incidente no albatross. Não foi possível encontrar a referência da aplicação",
                   workflow_stage_id: options[:kanbantool]['workflow_stage_id'],
                   card_type_id: options[:kanbantool]['card_type_id'],
               #    assigned_user_id: options[:kanbantool]['assigned_user_id'],
